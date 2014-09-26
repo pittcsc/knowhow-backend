@@ -3,12 +3,21 @@
   "version": "0.0.1",
   "description": "",
   "main": "index.js",
-  "dependencies": {},
+  "dependencies": {
+    "express": "^4.9.5"
+  },
   "devDependencies": {
-    "gulp": "^3.8.8"
+    "coffee-script": "^1.8.0",
+    "gulp": "^3.8.8",
+    "gulp-clean": "^0.3.1",
+    "gulp-coffee": "^2.2.0",
+    "gulp-nodemon": "^1.0.4",
+    "gulp-util": "^3.0.1",
+    "gulp-watch": "^1.0.7"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "gulp compile-server --require coffee-script/register && gulp start-dev-server --require coffee-script/register"
   },
   "author": "",
   "license": "ISC"
