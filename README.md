@@ -18,6 +18,7 @@ consume the API with limited configuration.
 ## Steps
 
 1. Clone project
+- `git submodule update --init`
 - `npm install`
 - Start MongoDB instance. If you need to run it through Vagrant (recommended)
   use [this project](https://github.com/bobthecow/vagrant-mongobox).  It was

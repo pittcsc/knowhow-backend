@@ -1,3 +1,4 @@
 node_modules/
 .vagrant/
 system/logs/
+.DS_Store
