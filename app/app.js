@@ -1,53 +1,39 @@
-var app, db, express, server;
+
+/*
+ *  Knowhow Server
+ *  Alex LaFroscia
+ *  Sep 26, 2014
+ */
+var app, connect, express, fs, mongoose, router, server;
+
+fs = require('fs');
 
 express = require('express');
 
+mongoose = require('mongoose');
+
 app = express();
 
-db = require('./data');
+router = express.Router();
 
-app.use(function(req, res, next) {
-  res.set({
-    'Access-Control-Allow-Origin': '*'
-  });
-  return next();
+connect = function() {
+  return mongoose.connect('mongodb://localhost:27018/knowhow');
+};
+
+connect();
+
+mongoose.connection.on('error', console.error.bind(console, 'connection error:'));
+
+fs.readdirSync(__dirname + '/models').forEach(function(file) {
+  return require(__dirname + '/models/' + file);
 });
 
-app.get('/', function(req, res) {
-  return res.send('<h1>Hello world!</h1>');
-});
+require('./config/express')(app);
 
-
-/*
- *  Categories Route
- */
-
-app.route('/categories').all(function(req, res, next) {
-  return next();
-}).get(function(req, res, next) {
-  res.json({
-    categories: db.toArray()
-  });
-  res.status(200).end();
-  return next();
-}).post(function(req, res, next) {
-  return ress.status(200).end();
-});
-
-app.route('/categories/:id').get(function(req, res, next) {
-  var category;
-  category = db.find(parseInt(req.param('id')));
-  res.json({
-    category: category
-  });
-  return res.status(200).end();
-});
-
-
-/*
- *  Finish Initialization
- */
+require('./config/router')(app, express);
 
 server = app.listen(3000, function() {
   return console.log("listening on port %d", server.address().port);
 });
+
+module.exports = app;

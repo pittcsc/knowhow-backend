@@ -9,7 +9,7 @@
 8 verbose unsafe-perm in lifecycle true
 9 info knowhow-backend@0.0.1 Failed to exec start script
 10 verbose stack Error: knowhow-backend@0.0.1 start: `gulp compile-server --require coffee-script/register && gulp start-dev-server --require coffee-script/register`
-10 verbose stack Exit status 8
+10 verbose stack Exit status 1
 10 verbose stack     at ChildProcess.<anonymous> (/usr/local/lib/node_modules/npm/lib/utils/lifecycle.js:212:16)
 10 verbose stack     at ChildProcess.emit (events.js:98:17)
 10 verbose stack     at maybeClose (child_process.js:756:16)
@@ -22,7 +22,7 @@
 16 error npm  v2.0.0
 17 error code ELIFECYCLE
 18 error knowhow-backend@0.0.1 start: `gulp compile-server --require coffee-script/register && gulp start-dev-server --require coffee-script/register`
-18 error Exit status 8
+18 error Exit status 1
 19 error Failed at the knowhow-backend@0.0.1 start script.
 19 error This is most likely a problem with the knowhow-backend package,
 19 error not with npm itself.

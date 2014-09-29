@@ -1,42 +1,36 @@
-express = require 'express'
-app = express()
-db = require './data'
-
-app.use (req, res, next)->
-  res.set
-    'Access-Control-Allow-Origin': '*'
-  next()
-
-app.get '/', (req, res)->
-  res.send '<h1>Hello world!</h1>'
-
-
 ###
-#  Categories Route
+#  Knowhow Server
+#  Alex LaFroscia
+#  Sep 26, 2014
 ###
 
-app.route '/categories'
-.all (req, res, next)->
-  next()
-.get (req, res, next)->
-  res.json { categories: db.toArray() }
-  res.status(200).end()
-  next()
-.post (req, res, next)->
-  ress.status(200).end()
+fs       = require 'fs'
+express  = require 'express'
+mongoose = require 'mongoose'
+app      = express()
+router   = express.Router()
 
 
-app.route '/categories/:id'
-.get (req, res, next)->
-  category = db.find parseInt(req.param('id'))
-  res.json { category: category }
-  res.status(200).end()
+# Set up Database
+connect = ->
+  mongoose.connect 'mongodb://localhost:27018/knowhow'
+connect()
+mongoose.connection.on 'error', console.error.bind(console, 'connection error:')
 
 
+# Set up Models
+fs.readdirSync(__dirname + '/models').forEach (file)->
+  require(__dirname + '/models/' + file)
 
-###
-#  Finish Initialization
-###
+# Express Config
+require('./config/express')(app)
 
+# Router
+require('./config/router')(app, express)
+
+
+# Start server
 server = app.listen 3000, ->
   console.log "listening on port %d", server.address().port
+
+module.exports = app
