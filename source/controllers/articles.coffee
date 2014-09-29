@@ -10,10 +10,7 @@ Article = mongoose.model 'Article'
 exports.load = (req, res, next)->
   Article.findById req.param('id'), (err, article)->
     return next(err) if err?
-    if !article? or article.length == 0
-      return next(new Error('not found'))
-    else
-      req.article = article
+    req.article = article
     next()
 
 

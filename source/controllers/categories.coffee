@@ -4,23 +4,21 @@
 
 mongoose = require 'mongoose'
 Category = mongoose.model 'Category'
+Collection = mongoose.model 'Collection'
 
 
 # Helper method to load an article onto the request object
 exports.load = (req, res, next)->
   Category.findById req.param('id'), (err, category)->
     return next(err) if err?
-    if !category? or category.length == 0
-      return next(new Error('not found'))
-    else
-      req.category = category
+    req.category = category
     next()
 
 
 # Return a single category
 exports.show = (req, res, next)->
-  res.json { category: req.category }
-  res.status 200
+  res.status(200).json { category: req.category }
+
 
 
 # Return an array of categories
@@ -37,8 +35,7 @@ exports.new = (req, res, next)->
     console.log "Created category: #{category.title}"
     res.set
       'Location': "/categories/#{category._id}"
-    res.json { category: category }
-    res.status(201).end()
+    res.status(201).json { category: category }
 
 
 # Update

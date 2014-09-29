@@ -13,5 +13,13 @@ ArticleSchema = new Schema
 # Validations
 ArticleSchema.path('title').required true, 'Article title can\'t be blank'
 
+ArticleSchema.method
+  toJSON: ->
+    json = {}
+    json.id = @_id
+    json.title = @title
+    json.body = @body
+
+    return json
 
 mongoose.model 'Article', ArticleSchema

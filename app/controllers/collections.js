@@ -9,20 +9,18 @@ exports.load = function(req, res, next) {
     if (err != null) {
       return next(err);
     }
-    if ((collection == null) || collection.length === 0) {
-      return next(new Error('not found'));
-    } else {
-      req.collection = collection;
-    }
+    req.collection = collection;
     return next();
   });
 };
 
 exports.show = function(req, res, next) {
-  res.json({
+  console.log("Showing collection:");
+  console.log("\tid:    " + req.collection._id);
+  console.log("\ttitle: " + req.collection.title);
+  return res.status(200).json({
     collection: req.collection
   });
-  return res.status(200);
 };
 
 exports.index = function(req, res, next) {
@@ -35,16 +33,19 @@ exports.index = function(req, res, next) {
 };
 
 exports["new"] = function(req, res, next) {
+  req.body.collection.category = req.category._id;
   return Collection.create(req.body.collection, function(err, collection) {
     if (err != null) {
       return next(err);
     }
-    console.log("Created collection: " + collection.title);
-    res.set({
-      'Location': "/collections/" + collection._id
-    });
-    return res.status(201).json({
-      collection: collection
+    return req.category.addCollection(collection, function() {
+      console.log("Created collection: " + collection.title);
+      res.set({
+        'Location': "/collections/" + collection._id
+      });
+      return res.status(201).json({
+        collection: collection
+      });
     });
   });
 };

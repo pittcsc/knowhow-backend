@@ -1,28 +1,25 @@
-var Category, mongoose;
+var Category, Collection, mongoose;
 
 mongoose = require('mongoose');
 
 Category = mongoose.model('Category');
+
+Collection = mongoose.model('Collection');
 
 exports.load = function(req, res, next) {
   return Category.findById(req.param('id'), function(err, category) {
     if (err != null) {
       return next(err);
     }
-    if ((category == null) || category.length === 0) {
-      return next(new Error('not found'));
-    } else {
-      req.category = category;
-    }
+    req.category = category;
     return next();
   });
 };
 
 exports.show = function(req, res, next) {
-  res.json({
+  return res.status(200).json({
     category: req.category
   });
-  return res.status(200);
 };
 
 exports.index = function(req, res, next) {
@@ -43,10 +40,9 @@ exports["new"] = function(req, res, next) {
     res.set({
       'Location': "/categories/" + category._id
     });
-    res.json({
+    return res.status(201).json({
       category: category
     });
-    return res.status(201).end();
   });
 };
 

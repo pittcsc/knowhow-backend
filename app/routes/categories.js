@@ -1,17 +1,24 @@
-var controller;
+var catController, colController;
 
-controller = require('../controllers/categories');
+catController = require('../controllers/categories');
+
+colController = require('../controllers/collections');
 
 module.exports = function(router) {
-  router.param('id', controller.load);
+  router.param('id', catController.load);
 
   /*
    *  List Categories
    */
-  router.route('/').get(controller.index).post(controller["new"]);
+  router.route('/').get(catController.index).post(catController["new"]);
 
   /*
    *  Get Category
    */
-  return router.route('/:id').get(controller.show).put(controller.update)["delete"](controller["delete"]);
+  router.route('/:id').get(catController.show).put(catController.update)["delete"](catController["delete"]);
+
+  /*
+   *  Create new collection
+   */
+  return router.route('/:id/collections').post(colController["new"]);
 };

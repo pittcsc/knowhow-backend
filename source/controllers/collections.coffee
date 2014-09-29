@@ -2,7 +2,7 @@
 # Categories Controller
 #
 
-mongoose = require 'mongoose'
+mongoose   = require 'mongoose'
 Collection = mongoose.model 'Collection'
 
 
@@ -10,17 +10,16 @@ Collection = mongoose.model 'Collection'
 exports.load = (req, res, next)->
   Collection.findById req.param('id'), (err, collection)->
     return next(err) if err?
-    if !collection? or collection.length == 0
-      return next(new Error('not found'))
-    else
-      req.collection = collection
+    req.collection = collection
     next()
 
 
 # Return a single collection
 exports.show = (req, res, next)->
-  res.json { collection: req.collection}
-  res.status 200
+  console.log "Showing collection:"
+  console.log "\tid:    #{req.collection._id}"
+  console.log "\ttitle: #{req.collection.title}"
+  res.status(200).json { collection: req.collection}
 
 
 # Return an array of collections
@@ -32,12 +31,14 @@ exports.index = (req, res, next)->
 
 # Create a new collection
 exports.new = (req, res, next)->
+  req.body.collection.category = req.category._id
   Collection.create req.body.collection, (err, collection)->
     return next(err) if err?
-    console.log "Created collection: #{collection.title}"
-    res.set
-      'Location': "/collections/#{collection._id}"
-    res.status(201).json { collection: collection }
+    req.category.addCollection collection, ->
+      console.log "Created collection: #{collection.title}"
+      res.set
+        'Location': "/collections/#{collection._id}"
+      res.status(201).json { collection: collection }
 
 
 # Update

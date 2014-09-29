@@ -9,11 +9,7 @@ exports.load = function(req, res, next) {
     if (err != null) {
       return next(err);
     }
-    if ((article == null) || article.length === 0) {
-      return next(new Error('not found'));
-    } else {
-      req.article = article;
-    }
+    req.article = article;
     return next();
   });
 };

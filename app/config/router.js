@@ -35,6 +35,9 @@ module.exports = function(app, express) {
    */
   return app.use(function(err, req, res, next) {
     if (err.message = 'not found') {
+      console.log("ERROR:");
+      console.log("\t" + err.message);
+      console.log("\t" + err.stack);
       res.status(404).end();
     } else if (err.name === 'ValidationError') {
       res.status(400).end();
